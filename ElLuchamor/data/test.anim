@@ -1,6 +1,6 @@
 # id filename frames speed looped next
-0 anim\idle.png 1 10 true -1
-1 anim\walk.png 6 10 true -1
-2 anim\kick.png 3 6 false 0
-3 anim\hit.png 1 2 false 0
-4 anim\fall.png 2 5 false -1
+0 anim/idle.png 1 10 true -1
+1 anim/walk.png 6 10 true -1
+2 anim/kick.png 3 6 false 0
+3 anim/hit.png 1 2 false 0
+4 anim/fall.png 2 5 false -1
