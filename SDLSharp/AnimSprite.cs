@@ -61,62 +61,30 @@ namespace SDLSharp
 
         public void Draw(int x, int y, int w, int h)
         {
-            SDL.SDL_Rect src;
-            src.x = (int)frame * this.w;
-            src.y = 0;
-            src.w = this.w;
-            src.h = this.h;
-            SDL.SDL_Rect dst;
-            dst.x = x - (int)Game.Camera.X;
-            dst.y = y - (int)Game.Camera.Y;
-            dst.w = w <= 0 ? this.w : w;
-            dst.h = h <= 0 ? this.h : h;
+            SDL.SDL_Rect src = new SDL.SDL_Rect((int)frame * this.w, 0, this.w, this.h);
+            SDL.SDL_Rect dst = new SDL.SDL_Rect(x - (int)Game.Camera.X, y - (int)Game.Camera.Y, w <= 0 ? this.w : w, h <= 0 ? this.h : h);
             SDL.SDL_RenderCopy(Game.renderer, this.texture, ref src, ref dst);
         }
 
         public void Draw(int x, int y, int w, int h, double angle, bool flipv, bool fliph)
         {
-            SDL.SDL_Rect src;
-            src.x = (int)frame * this.w;
-            src.y = 0;
-            src.w = this.w;
-            src.h = this.h;
-            SDL.SDL_Rect dst;
-            dst.x = x - (int)Game.Camera.X;
-            dst.y = y - (int)Game.Camera.Y;
-            dst.w = w <= 0 ? this.w : w;
-            dst.h = h <= 0 ? this.h : h;
+            SDL.SDL_Rect src = new SDL.SDL_Rect((int)frame * this.w, 0, this.w, this.h);
+            SDL.SDL_Rect dst = new SDL.SDL_Rect(x - (int)Game.Camera.X, y - (int)Game.Camera.Y, w <= 0 ? this.w : w, h <= 0 ? this.h : h);
             int flip = (flipv ? 2 : 0) + (fliph ? 1 : 0);
             SDL.SDL_RenderCopyEx(Game.renderer, this.texture, ref src, ref dst, angle, IntPtr.Zero, (SDL.SDL_RendererFlip)flip);
         }
 
         public void DrawCenter(int x, int y, int w, int h)
         {
-            SDL.SDL_Rect src;
-            src.x = (int)frame * this.w;
-            src.y = 0;
-            src.w = this.w;
-            src.h = this.h;
-            SDL.SDL_Rect dst;
-            dst.x = x - this.w / 2 - (int)Game.Camera.X;
-            dst.y = y - this.h / 2 - (int)Game.Camera.Y;
-            dst.w = w <= 0 ? this.w : w;
-            dst.h = h <= 0 ? this.h : h;
+            SDL.SDL_Rect src = new SDL.SDL_Rect((int)frame * this.w, 0, this.w, this.h);
+            SDL.SDL_Rect dst = new SDL.SDL_Rect(x - (int)Game.Camera.X - this.w / 2, y - (int)Game.Camera.Y - this.h / 2, w, h);
             SDL.SDL_RenderCopy(Game.renderer, this.texture, ref src, ref dst);
         }
 
         public void DrawCenter(int x, int y, int w, int h, double angle, bool flipv, bool fliph)
         {
-            SDL.SDL_Rect src;
-            src.x = (int)frame * this.w;
-            src.y = 0;
-            src.w = this.w;
-            src.h = this.h;
-            SDL.SDL_Rect dst;
-            dst.x = x - this.w / 2 - (int)Game.Camera.X;
-            dst.y = y - this.h / 2 - (int)Game.Camera.Y;
-            dst.w = w <= 0 ? this.w : w;
-            dst.h = h <= 0 ? this.h : h;
+            SDL.SDL_Rect src = new SDL.SDL_Rect((int)frame * this.w, 0, this.w, this.h);
+            SDL.SDL_Rect dst = new SDL.SDL_Rect(x - (int)Game.Camera.X - this.w / 2, y - (int)Game.Camera.Y - this.h / 2, w, h);
             int flip = (flipv ? 2 : 0) + (fliph ? 1 : 0);
             SDL.SDL_RenderCopyEx(Game.renderer, this.texture, ref src, ref dst, angle, IntPtr.Zero, (SDL.SDL_RendererFlip)flip);
         }

@@ -2881,6 +2881,12 @@ namespace SDL2
 		{
 			public int x;
 			public int y;
+
+            public SDL_Point(int x, int y)
+            {
+                this.x = x;
+                this.y = y;
+            }
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -2890,6 +2896,14 @@ namespace SDL2
 			public int y;
 			public int w;
 			public int h;
+
+            public SDL_Rect(int x, int y, int w, int h)
+            {
+                this.x = x;
+                this.y = y;
+                this.w = w;
+                this.h = h;
+            }
 		}
 
 		/* Only available in 2.0.4 */
