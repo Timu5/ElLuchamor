@@ -93,22 +93,21 @@ namespace ElLuchamor
 
         public void Kick()
         {
-            int start = (int)(Pos.X - (Dir ? -50 : 0) + (Dir ? -45 : 45));
-            int end = start + 50;
+            int start = (int)Pos.X + (Dir?-30-45:45);
+            int end = start + 30;
             kickLock = true;
             foreach (Character ch in Level.Instance.chs)
             {
                 if (ch != this)
                 {
-                    if ((ch.Pos.X <= end + 45 && ch.Pos.X >= end - 45))
+                    if ((ch.Pos.X <= start + 45 && ch.Pos.X >= start - 45) || (ch.Pos.X <= end + 45 && ch.Pos.X >= end - 45))
                     {
-                        //if (ch.Pos.Y <= Pos.Y + 30 && ch.Pos.Y >= Pos.Y - 30)
+                        if (ch.Pos.Y <= Pos.Y + 30 && ch.Pos.Y >= Pos.Y - 30)
                         {
                             ch.Life -= 0.4f;
                             ch.Hit();
                         }
                     }
-                    Log.WriteLine(ch.Pos.Y + " " + Pos.Y + " " + start);
                 }
 
             }
