@@ -56,7 +56,7 @@ namespace ElLuchamor
             //to jest implementowane przez konretna klase dziedziczaca po postaci, np gracz albo przeciwnik
         }
 
-        public void Draw()
+        virtual public void Draw()
         {
             sprite.DrawCenter((int)(Pos.X - Pos.Y / 1.5) + 100, (int)Pos.Y, false, Dir); // rusujemy z uwzgledniemiem glebokosci
         }
@@ -93,7 +93,7 @@ namespace ElLuchamor
 
         public void Kick()
         {
-            int start = (int)Pos.X + (Dir?-30-45:45);
+            int start = (int)Pos.X + (Dir ? -30 - 45 : 45);
             int end = start + 30;
             kickLock = true;
             foreach (Character ch in Level.Instance.chs)
@@ -104,7 +104,7 @@ namespace ElLuchamor
                     {
                         if (ch.Pos.Y <= Pos.Y + 30 && ch.Pos.Y >= Pos.Y - 30)
                         {
-                            ch.Life -= 0.4f;
+                            ch.Life = Math.Max(0.0f, ch.Life - 0.2f);
                             ch.Hit();
                         }
                     }

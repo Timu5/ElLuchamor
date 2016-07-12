@@ -81,5 +81,14 @@ namespace ElLuchamor
             Pos.Y = Math.Min(Math.Max(300, Pos.Y), 430);
             Game.Camera.X = Math.Min(Math.Max(Level.Instance.Lock.X - 200, Pos.X - 420), Level.Instance.Lock.Y - 640);
         }
+
+        override public void Draw()
+        {
+            base.Draw();
+            Renderer.SetColor(0, 0, 0, 0);
+            Renderer.FillRect(new Vector2(4 + Game.Camera.X, 4), new Vector2(202, 27));
+            Renderer.SetColor(255, 0, 0, 0);
+            Renderer.FillRect(new Vector2(5 + Game.Camera.X, 5), new Vector2(200 * Life, 25));
+        }
     }
 }
