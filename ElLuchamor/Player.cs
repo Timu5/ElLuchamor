@@ -79,7 +79,7 @@ namespace ElLuchamor
 
             Pos.X = Math.Min(Math.Max(Level.Instance.Lock.X, Pos.X), Level.Instance.Lock.Y);
             Pos.Y = Math.Min(Math.Max(300, Pos.Y), 430);
-            Game.Camera.X = Math.Min(Math.Max(Level.Instance.Lock.X - 200, Pos.X - 420), Level.Instance.Lock.Y - 640);
+            Game.Camera.X = Math.Min(Math.Max(Level.Instance.Lock.X - 200, MathE.Lerp(Game.Camera.X, Pos.X - (640 / 2) - (Pos.Y / 1.5f) + 100, 0.1f)), Level.Instance.Lock.Y - 640);
         }
 
         override public void Draw()
