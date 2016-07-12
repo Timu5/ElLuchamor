@@ -39,6 +39,8 @@ namespace SDLSharp
             IntPtr window = SDL.SDL_CreateWindow(Name, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED, 640, 480, SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN);
             renderer = SDL.SDL_CreateRenderer(window, 0, SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED | SDL.SDL_RendererFlags.SDL_RENDERER_PRESENTVSYNC);
 
+            Renderer.Init(renderer);
+
             current.Init();
 
             uint oldTime = 0;
