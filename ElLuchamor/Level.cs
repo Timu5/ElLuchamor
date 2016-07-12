@@ -7,7 +7,7 @@ namespace ElLuchamor
     {
         static public Level Instance;
         
-        Sprite bg; // tlo
+        Sprite[] bg; // tlo
         Music m;
         public List<Character> chs; // postacie
 
@@ -20,7 +20,10 @@ namespace ElLuchamor
 
         public void Init() // wykona sie raz podczas wczytania
         {
-            bg = Assets.Get<Sprite>("bg1.png"); // wczytujemy tło
+            bg = new Sprite[3];
+            bg[0] = Assets.Get<Sprite>("bg0.png"); // wczytujemy tło
+            bg[1] = Assets.Get<Sprite>("bg1.png"); // wczytujemy tło
+            bg[2] = Assets.Get<Sprite>("bg2.png"); // wczytujemy tło
             m = Assets.Get<Music>("bg2.mp3"); // wczytujemy muzyke
             chs = new List<Character>(); // Tworzymy liste postaci
             chs.Add(new Player(300, 200)); // dodajemy gracza do listy postaci
@@ -49,7 +52,9 @@ namespace ElLuchamor
 
         public void Draw() // wykonuje sie podczas kazdej klatki
         {
-            bg.Draw(0, 0); // rysyj tlo
+            bg[0].Draw((int)(Game.Camera.X * 0.9), (int)(Game.Camera.Y * 0.9)); 
+            bg[1].Draw((int)(Game.Camera.X * 0.5), (int)(Game.Camera.Y * 0.5)); 
+            bg[2].Draw(0, 0); // rysyj tlo
             for (int i = 0; i < chs.Count; i++)
             {
                 chs[i].Draw(); // rysuj wszytkie posacie, w tym gracza
