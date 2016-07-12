@@ -104,7 +104,7 @@ namespace ElLuchamor
                     {
                         if (ch.Pos.Y <= Pos.Y + 30 && ch.Pos.Y >= Pos.Y - 30)
                         {
-                            ch.Life = Math.Max(0.0f, ch.Life - 0.2f);
+                            ch.Life = Math.Max(0.0f, ch.Life - 0.21f);
                             ch.Hit();
                         }
                     }

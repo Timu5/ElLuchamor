@@ -26,6 +26,7 @@ namespace ElLuchamor
             sprite.Update(time);
 
             if (state == CharacterState.Dead) return;
+            if (Player.Instance.Life <= 0.0f) return;
 
             if (state == CharacterState.Walk || state == CharacterState.Idle)
             {
@@ -61,8 +62,16 @@ namespace ElLuchamor
                             }
                             else
                             {
-                                sprite.SetAnim(0);
-                                state = CharacterState.Idle;
+                                if ((new Random()).Next(0, 100) < 98) // Temp hack !
+                                {
+                                    sprite.SetAnim(0);
+                                    state = CharacterState.Idle;
+                                }
+                                else
+                                {
+                                    sprite.SetAnim(2);
+                                    state = CharacterState.Kick;
+                                }
                             }
                         }
 
@@ -73,6 +82,13 @@ namespace ElLuchamor
             {
                 state = CharacterState.Idle;
                 kickLock = false;
+            }
+            else if (state == CharacterState.Kick)
+            {
+                if (sprite.GetFrame() == 1 && !kickLock)
+                {
+                    Kick();
+                }
             }
 
             this.Dir = this.Pos.X - Player.Instance.Pos.X > 0;
