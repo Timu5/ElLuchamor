@@ -52,7 +52,7 @@ namespace ElLuchamor
 
         public void Draw() // wykonuje sie podczas kazdej klatki
         {
-            bg[0].Draw((int)(Game.Camera.X * 0.9), (int)(Game.Camera.Y * 0.9)); 
+            bg[0].Draw((int)(Game.Camera.X), (int)(Game.Camera.Y)); 
             bg[1].Draw((int)(Game.Camera.X * 0.5), (int)(Game.Camera.Y * 0.5)); 
             bg[2].Draw(0, 0); // rysyj tlo
             for (int i = 0; i < chs.Count; i++)
