@@ -7,8 +7,9 @@ namespace ElLuchamor
     {
         Idle,
         Patrol,
-        Chasing,
-        Attack
+        Chase,
+        Attack,
+        Flee
     }
 
     class Enemy : Character // klasa Enenmy dziedziczasa po CHaracter
@@ -17,7 +18,7 @@ namespace ElLuchamor
         public Enemy(float x, float y)
             : base(x, y)
         {
-            estate = EnemyState.Chasing;
+            estate = EnemyState.Chase;
             speed = new Vector2(250, 150);
         }
 
@@ -30,10 +31,10 @@ namespace ElLuchamor
 
             if (state == CharacterState.Walk || state == CharacterState.Idle)
             {
-
+                this.Dir = this.Pos.X - Player.Instance.Pos.X > 0;
                 switch (estate)
                 {
-                    case EnemyState.Chasing:
+                    case EnemyState.Chase:
                         if (Player.Instance.Pos.Y < Pos.Y - 10)
                         {
                             Pos.Y -= time * speed.Y;
@@ -62,19 +63,18 @@ namespace ElLuchamor
                             }
                             else
                             {
-                                if ((new Random()).Next(0, 100) < 98) // Temp hack !
-                                {
-                                    sprite.SetAnim(0);
-                                    state = CharacterState.Idle;
-                                }
-                                else
+                                if (kickTimeout <= Game.GetTime() && (new Random()).Next(0, 100) > 96) // Temp hack !
                                 {
                                     sprite.SetAnim(2);
                                     state = CharacterState.Kick;
                                 }
+                                else
+                                {
+                                    sprite.SetAnim(0);
+                                    state = CharacterState.Idle;
+                                }
                             }
                         }
-
                         break;
                 }
             }
@@ -91,8 +91,6 @@ namespace ElLuchamor
                 }
             }
 
-            this.Dir = this.Pos.X - Player.Instance.Pos.X > 0;
-            // todo ai
             Pos.X = Math.Min(Math.Max(Level.Instance.Lock.X, Pos.X), Level.Instance.Lock.Y);
             Pos.Y = Math.Min(Math.Max(300, Pos.Y), 430);
         }
