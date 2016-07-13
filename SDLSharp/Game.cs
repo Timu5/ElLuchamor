@@ -31,6 +31,11 @@ namespace SDLSharp
             current = state;
         }
 
+        public static uint GetTime()
+        {
+            return SDL.SDL_GetTicks();
+        }
+
         public static void Run(IGameState state)
         {
             current = state;
