@@ -54,7 +54,7 @@ namespace ElLuchamor
                     state = CharacterState.Idle;
                 }
 
-                if (Input.GetKeyDown(Key.E))
+                if (Input.GetKeyDown(Key.E) && kickTimeout <= Game.GetTime())
                 {
                     sprite.SetAnim(2);
                     state = CharacterState.Kick;

@@ -30,6 +30,15 @@ namespace ElLuchamor
 
         protected Vector2 speed = new Vector2(300, 150);
 
+        protected float centerToSide;
+        protected float centerToBottom;
+
+        protected int combo;
+        protected int kills;
+
+        protected uint kickTimeout;
+        protected uint comboTimeout;
+
         public Character()
             : this(0, 0)
         {
@@ -49,6 +58,12 @@ namespace ElLuchamor
             sprite = new AnimSprite(Assets.Get<string>("test.anim"));
 
             kickLock = false;
+
+            combo = 0;
+            kills = 0;
+
+            kickTimeout = 0;
+            comboTimeout = 0;
         }
 
         virtual public void Update(float time)
@@ -73,22 +88,34 @@ namespace ElLuchamor
             return true;
         }
 
-        public void Hit()
+        private void AddComboPoint()
+        {
+            if (comboTimeout > Game.GetTime())
+                combo++;
+            else
+                combo = 1;
+            comboTimeout = Game.GetTime() + 1000; // 1s
+        }
+
+        public int Hurt(float damage)
         {
             if (state != CharacterState.Dead)
             {
-                Log.WriteLine("Hit! " + Life);
+                Life = Math.Max(0.0f, Life - 0.21f);
                 if (Life <= 0.0f)
                 {
                     state = CharacterState.Dead;
                     sprite.SetAnim(4);
+                    return 2;
                 }
                 else
                 {
                     state = CharacterState.Hit;
                     sprite.SetAnim(3);
+                    return 1;
                 }
             }
+            return 0;
         }
 
         public void Kick()
@@ -96,6 +123,7 @@ namespace ElLuchamor
             int start = (int)Pos.X + (Dir ? -30 - 45 : 45);
             int end = start + 30;
             kickLock = true;
+            kickTimeout = Game.GetTime() + 500;
             foreach (Character ch in Level.Instance.chs)
             {
                 if (ch != this)
@@ -104,12 +132,19 @@ namespace ElLuchamor
                     {
                         if (ch.Pos.Y <= Pos.Y + 30 && ch.Pos.Y >= Pos.Y - 30)
                         {
-                            ch.Life = Math.Max(0.0f, ch.Life - 0.21f);
-                            ch.Hit();
+                            switch (ch.Hurt(0.21f))
+                            {
+                                case 2:
+                                    kills++;
+                                    AddComboPoint();
+                                    break;
+                                case 1:
+                                    AddComboPoint();
+                                    break;
+                            }
                         }
                     }
                 }
-
             }
         }
     }
