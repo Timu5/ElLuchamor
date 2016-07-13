@@ -6,11 +6,14 @@ namespace ElLuchamor
     class Player : Character // klasa Player dzieczidzaca po Character
     {
         public static Player Instance;
-        
+
+        float lifeBar;
+
         public Player(float x, float y)
             : base(x, y)
         {
             Instance = this;
+            lifeBar = Life * 200;
         }
 
         override public void Update(float time)
@@ -88,7 +91,7 @@ namespace ElLuchamor
             Renderer.SetColor(0, 0, 0, 0);
             Renderer.FillRect(new Vector2(4 + Game.Camera.X, 4), new Vector2(202, 27));
             Renderer.SetColor(255, 0, 0, 0);
-            Renderer.FillRect(new Vector2(5 + Game.Camera.X, 5), new Vector2(200 * Life, 25));
+            Renderer.FillRect(new Vector2(5 + Game.Camera.X, 5), new Vector2(lifeBar = MathE.Lerp(lifeBar, 200 * Life, 0.2f), 25));
         }
     }
 }
