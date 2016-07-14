@@ -12,7 +12,7 @@ namespace ElLuchamor
         static void Main(string[] args)
         {
             Game.Name = "El Luchamor";
-            Game.Run(new Level()); // uruchom gre
+            Game.Run(new MainMenu()); // uruchom gre
         }
     }
 }
