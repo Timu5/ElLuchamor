@@ -41,11 +41,18 @@ namespace SDLSharp
         public static void Run(IGameState state)
         {
             current = state;
+            Config.Load();
             SDL.SDL_Init(SDL2.SDL.SDL_INIT_EVERYTHING);
             SDL_mixer.Mix_OpenAudio(44100, SDL_mixer.MIX_DEFAULT_FORMAT, 2, 4096);
             SDL_ttf.TTF_Init();
-            IntPtr window = SDL.SDL_CreateWindow(Name, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED, 640, 480, SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN);
+            IntPtr window = SDL.SDL_CreateWindow(Name, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED, Config.GetInt("width"), Config.GetInt("height"), SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN);
             renderer = SDL.SDL_CreateRenderer(window, 0, SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED | SDL.SDL_RendererFlags.SDL_RENDERER_PRESENTVSYNC);
+
+            if (Config.GetInt("fullscreen") > 0)
+                SDL.SDL_SetWindowFullscreen(window, (Config.GetInt("fullscreen") == 1) ? (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN : (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);
+
+            SDL.SDL_SetHint(SDL.SDL_HINT_RENDER_SCALE_QUALITY, "0");
+            SDL.SDL_RenderSetLogicalSize(renderer, 640, 480);
 
             Renderer.Init(renderer);
 

@@ -42,6 +42,7 @@
     <Compile Include="AnimSprite.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Chunk.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="MathE.cs" />
     <Compile Include="Music.cs" />
     <Compile Include="Text.cs" />

@@ -73,4 +73,7 @@
       <Name>SDLSharp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="config.txt" />
+  </ItemGroup>
 </Project>
