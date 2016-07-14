@@ -14,6 +14,8 @@ namespace SDLSharp
         static bool running = true;
         public static IntPtr renderer = IntPtr.Zero;
 
+        public static float TimeScale = 1.0f; 
+
         static IGameState current;
 
         public static void SetState(IGameState state)
@@ -41,6 +43,7 @@ namespace SDLSharp
             current = state;
             SDL.SDL_Init(SDL2.SDL.SDL_INIT_EVERYTHING);
             SDL_mixer.Mix_OpenAudio(44100, SDL_mixer.MIX_DEFAULT_FORMAT, 2, 4096);
+            SDL_ttf.TTF_Init();
             IntPtr window = SDL.SDL_CreateWindow(Name, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED, 640, 480, SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN);
             renderer = SDL.SDL_CreateRenderer(window, 0, SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED | SDL.SDL_RendererFlags.SDL_RENDERER_PRESENTVSYNC);
 
@@ -78,7 +81,7 @@ namespace SDLSharp
                 float time = (newTime - oldTime) / 1000.0f;
                 oldTime = newTime;
 
-                current.Update(time);
+                current.Update(time * TimeScale);
 
                 SDL.SDL_RenderClear(renderer);
 
@@ -92,6 +95,7 @@ namespace SDLSharp
             SDL.SDL_DestroyRenderer(renderer);
             SDL.SDL_DestroyWindow(window);
 
+            SDL_ttf.TTF_Quit();
             SDL_mixer.Mix_CloseAudio();
             SDL.SDL_Quit();
         }

@@ -58,6 +58,10 @@ namespace SDLSharp
                             obj = new Music(fullname);
                         break;
 
+                    case ".ttf":
+                        obj = SDL2.SDL_ttf.TTF_OpenFont(fullname, 60);
+                        break;
+
                     default: // Read as binary file
                         obj = File.ReadAllBytes(fullname);
                         break;
