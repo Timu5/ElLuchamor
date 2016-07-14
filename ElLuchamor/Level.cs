@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SDLSharp;
 
 namespace ElLuchamor
@@ -27,13 +28,19 @@ namespace ElLuchamor
             m = Assets.Get<Music>("bg2.mp3"); // wczytujemy muzyke
             chs = new List<Character>(); // Tworzymy liste postaci
             chs.Add(new Player(300, 200)); // dodajemy gracza do listy postaci
-            chs.Add(new Enemy(500, 220));
+            chs.Add(new Enemy(1000, 220));
             Lock = new Vector2(140+60, 3000+60+85);
             //m.Play(); // odpalamy muzyczke, bedzie leciała w petli
         }
 
         public void Update(float time) // wykonuje sie podczas kazdej klatki około 60 razy na sekunde, time to czas od ostanie klatki, do fizyki i animacji
         {
+            if (Input.GetKeyDown(Key.ESCAPE))
+            {
+                Game.SetState(new MainMenu());
+                return;
+            }
+
             int dead = 0;
             for (int i = 0; i < chs.Count; i++)
             {

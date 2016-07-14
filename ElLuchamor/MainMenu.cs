@@ -14,9 +14,12 @@ namespace ElLuchamor
 
         public void Init()
         {
-            texts = new Text[2];
+            Game.Camera.X = 0;
+            Game.Camera.Y = 0;
+            texts = new Text[3];
             texts[0] = new Text("Start Game", Assets.Get<IntPtr>("Vera.ttf"), 255, 0, 0, 0);
-            texts[1] = new Text("Exit", Assets.Get<IntPtr>("Vera.ttf"), 255, 0, 0, 0);
+            texts[1] = new Text("Options", Assets.Get<IntPtr>("Vera.ttf"), 255, 0, 0, 0);
+            texts[2] = new Text("Exit", Assets.Get<IntPtr>("Vera.ttf"), 255, 0, 0, 0);
             selected = 0;
         }
 
@@ -29,7 +32,7 @@ namespace ElLuchamor
 
             if (Input.GetKeyDown(Key.DOWN))
             {
-                selected = Math.Min(selected + 1, 1);
+                selected = Math.Min(selected + 1, 2);
             }
 
             if (Input.GetKeyDown(Key.RETURN))
@@ -38,7 +41,7 @@ namespace ElLuchamor
                 {
                     Game.SetState(new Level());
                 }
-                else
+                else if( selected == 2)
                 {
                     Game.Quit();
                 }
@@ -48,7 +51,7 @@ namespace ElLuchamor
         public void Draw()
         {
             Renderer.SetColor(125, 125, 125, 0);
-            Renderer.FillRect(new Vector2(0, selected*60), new Vector2(640, 60));
+            Renderer.FillRect(new Vector2(0, selected * 60), new Vector2(640, 60));
             
             int i = 0;
             foreach (Text t in texts)

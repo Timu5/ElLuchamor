@@ -92,6 +92,7 @@ namespace ElLuchamor
             Renderer.FillRect(new Vector2(4 + Game.Camera.X, 4), new Vector2(202, 27));
             Renderer.SetColor(255, 0, 0, 0);
             Renderer.FillRect(new Vector2(5 + Game.Camera.X, 5), new Vector2(lifeBar = MathE.Lerp(lifeBar, 200 * Life, 0.2f), 25));
+            Renderer.SetColor(0, 0, 0, 0);
         }
     }
 }
