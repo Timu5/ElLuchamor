@@ -11,8 +11,8 @@ namespace SDLSharp
 {
     public class Animation
     {
-        IntPtr texture;
-        int w, h;
+        public Sprite Sprite;
+        public int Width, Height;
 
         float speed;
         public float frame;
@@ -26,18 +26,12 @@ namespace SDLSharp
         {
             this.frame = 0;
             this.speed = speed;
-            this.texture = Assets.Get<Sprite>(filename).GetTexture();
+            this.Sprite = Assets.Get<Sprite>(filename);
             this.frameCount = x;
             this.looped = looped;
             this.Next = next;
-            uint tmp1; int tmp2;
-            SDL.SDL_QueryTexture(texture, out tmp1, out tmp2, out w, out h);
-            w = w / frameCount;
-        }
-
-        ~Animation()
-        {
-            SDL.SDL_DestroyTexture(texture);
+            this.Width = Sprite.Width / frameCount;
+            this.Height = Sprite.Height;
         }
 
         public void Reset()
@@ -61,32 +55,32 @@ namespace SDLSharp
 
         public void Draw(int x, int y, int w, int h)
         {
-            SDL.SDL_Rect src = new SDL.SDL_Rect((int)frame * this.w, 0, this.w, this.h);
-            SDL.SDL_Rect dst = new SDL.SDL_Rect(x - (int)Game.Camera.X, y - (int)Game.Camera.Y, w <= 0 ? this.w : w, h <= 0 ? this.h : h);
-            SDL.SDL_RenderCopy(Game.renderer, this.texture, ref src, ref dst);
+            SDL.SDL_Rect src = new SDL.SDL_Rect((int)frame * Width, 0, Width, Height);
+            SDL.SDL_Rect dst = new SDL.SDL_Rect(x - (int)Game.Camera.X, y - (int)Game.Camera.Y, w <= 0 ? Width : w, h <= 0 ? Height : h);
+            SDL.SDL_RenderCopy(Game.renderer, Sprite.Texture, ref src, ref dst);
         }
 
         public void Draw(int x, int y, int w, int h, double angle, bool flipv, bool fliph)
         {
-            SDL.SDL_Rect src = new SDL.SDL_Rect((int)frame * this.w, 0, this.w, this.h);
-            SDL.SDL_Rect dst = new SDL.SDL_Rect(x - (int)Game.Camera.X, y - (int)Game.Camera.Y, w <= 0 ? this.w : w, h <= 0 ? this.h : h);
+            SDL.SDL_Rect src = new SDL.SDL_Rect((int)frame * Width, 0, Width, Height);
+            SDL.SDL_Rect dst = new SDL.SDL_Rect(x - (int)Game.Camera.X, y - (int)Game.Camera.Y, w <= 0 ? Width : w, h <= 0 ? Height : h);
             int flip = (flipv ? 2 : 0) + (fliph ? 1 : 0);
-            SDL.SDL_RenderCopyEx(Game.renderer, this.texture, ref src, ref dst, angle, IntPtr.Zero, (SDL.SDL_RendererFlip)flip);
+            SDL.SDL_RenderCopyEx(Game.renderer, Sprite.Texture, ref src, ref dst, angle, IntPtr.Zero, (SDL.SDL_RendererFlip)flip);
         }
 
         public void DrawCenter(int x, int y, int w, int h)
         {
-            SDL.SDL_Rect src = new SDL.SDL_Rect((int)frame * this.w, 0, this.w, this.h);
-            SDL.SDL_Rect dst = new SDL.SDL_Rect(x - (int)Game.Camera.X - this.w / 2, y - (int)Game.Camera.Y - this.h / 2, w <= 0 ? this.w : w, h <= 0 ? this.h : h);
-            SDL.SDL_RenderCopy(Game.renderer, this.texture, ref src, ref dst);
+            SDL.SDL_Rect src = new SDL.SDL_Rect((int)frame * Width, 0, Width, Height);
+            SDL.SDL_Rect dst = new SDL.SDL_Rect(x - (int)Game.Camera.X - Width / 2, y - (int)Game.Camera.Y - Height / 2, w <= 0 ? Width : w, h <= 0 ? Height : h);
+            SDL.SDL_RenderCopy(Game.renderer, Sprite.Texture, ref src, ref dst);
         }
 
         public void DrawCenter(int x, int y, int w, int h, double angle, bool flipv, bool fliph)
         {
-            SDL.SDL_Rect src = new SDL.SDL_Rect((int)frame * this.w, 0, this.w, this.h);
-            SDL.SDL_Rect dst = new SDL.SDL_Rect(x - (int)Game.Camera.X - this.w / 2, y - (int)Game.Camera.Y - this.h / 2, w <= 0 ? this.w : w, h <= 0 ? this.h : h);
+            SDL.SDL_Rect src = new SDL.SDL_Rect((int)frame * Width, 0, Width, Height);
+            SDL.SDL_Rect dst = new SDL.SDL_Rect(x - (int)Game.Camera.X - Width / 2, y - (int)Game.Camera.Y - Height / 2, w <= 0 ? Width : w, h <= 0 ? Height : h);
             int flip = (flipv ? 2 : 0) + (fliph ? 1 : 0);
-            SDL.SDL_RenderCopyEx(Game.renderer, this.texture, ref src, ref dst, angle, IntPtr.Zero, (SDL.SDL_RendererFlip)flip);
+            SDL.SDL_RenderCopyEx(Game.renderer, Sprite.Texture, ref src, ref dst, angle, IntPtr.Zero, (SDL.SDL_RendererFlip)flip);
         }
     }
 
