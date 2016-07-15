@@ -35,9 +35,15 @@ namespace ElLuchamor
 
         public void Update(float time) // wykonuje sie podczas kazdej klatki około 60 razy na sekunde, time to czas od ostanie klatki, do fizyki i animacji
         {
-            if (Input.GetKeyDown(Key.ESCAPE))
+            if (Input.GetKeyDown(Key.Escape))
             {
                 Game.SetState(new MainMenu());
+                return;
+            }
+
+            if (Input.GetKeyDown(Key.Q))
+            {
+                Game.SetState(new Shop(this), false);
                 return;
             }
 
