@@ -1,0 +1,6 @@
+# id filename frames speed looped next
+0 anim2/idle.png 3 10 true -1
+1 anim2/walk.png 8 10 true -1
+2 anim2/kick.png 2 6 false 0
+3 anim2/hit.png 1 2 false 0
+4 anim2/fall.png 2 5 false -1

@@ -26,44 +26,63 @@ namespace ElLuchamor
 
         protected Chunk[] chunks; // efekty dzwiekowe
 
-        protected bool kickLock;
+        public Vector2 Speed;
 
-        protected Vector2 speed = new Vector2(300, 150);
+        public uint Attack;
+        public uint Defense;
 
-        protected float centerToSide;
-        protected float centerToBottom;
+        public float C2S; // center to side
+        public float C2B; // center to bottom
 
-        protected int combo;
-        protected int kills;
+        public uint AttackTimeout;
+        public uint ComboTimeout;
 
-        protected uint kickTimeout;
-        protected uint comboTimeout;
+        protected uint combo;
+        protected uint kills;
 
-        public Character()
-            : this(0, 0)
+        protected bool attackLock;
+        protected uint attackTimer;
+        protected uint comboTimer;
+
+        public Character(string name)
+            : this(name, 0, 0)
         {
         }
 
-        public Character(float x, float y)
+        public Character(string name, float x, float y)
         {
+            string[] pars = Assets.Get<string>(name).Split(new char[]{' ', '\t'}, StringSplitOptions.RemoveEmptyEntries);
+
             Pos = new Vector2(x, y);
             Life = 1.0f;
             state = CharacterState.Idle;
 
             Dir = false;
 
-            chunks = new Chunk[1];
-            chunks[0] = Assets.Get<Chunk>("c.ogg");
+            chunks = new Chunk[3];
+            chunks[0] = Assets.Get<Chunk>("cpunch.ogg");
+            chunks[1] = Assets.Get<Chunk>("chit.ogg");
+            chunks[2] = Assets.Get<Chunk>("cgrunt.ogg");
 
-            sprite = new AnimSprite(Assets.Get<string>("test.anim"));
+            sprite = new AnimSprite(Assets.Get<string>(pars[0]));
 
-            kickLock = false;
+            Speed = new Vector2(float.Parse(pars[3]), float.Parse(pars[4]));
 
-            combo = 0;
+            Attack = uint.Parse(pars[5]);
+            Defense = uint.Parse(pars[6]);
+
+            C2S = float.Parse(pars[1]);
+            C2B = float.Parse(pars[2]);
+
+            attackLock = false;
+            AttackTimeout = 500; // 0.5s
+            ComboTimeout = 1000; // 1s
+
+            combo = 1;
             kills = 0;
 
-            kickTimeout = 0;
-            comboTimeout = 0;
+            attackTimer = 0;
+            comboTimer = 0;
         }
 
         virtual public void Update(float time)
@@ -73,7 +92,10 @@ namespace ElLuchamor
 
         virtual public void Draw()
         {
-            sprite.DrawCenter((int)(Pos.X - Pos.Y / 1.5) + 100, (int)Pos.Y, false, Dir); // rusujemy z uwzgledniemiem glebokosci
+            sprite.DrawCenter((int)(Pos.X - Pos.Y / 1.5) + 100, (int)(Pos.Y - C2B), false, Dir); // rusujemy z uwzgledniemiem glebokosci
+            Renderer.FillRect(new Vector2((int)(Pos.X - Pos.Y / 1.5) + 100, Pos.Y - C2B), new Vector2(3, C2B));
+            Renderer.FillRect(new Vector2((int)(Pos.X - Pos.Y / 1.5) + 100, Pos.Y - C2B), new Vector2(C2S, 3));
+        
         }
 
         public int CompareTo(Character ch)
@@ -90,28 +112,30 @@ namespace ElLuchamor
 
         private void AddComboPoint()
         {
-            if (comboTimeout > Game.GetTime())
+            if (comboTimer >= Game.GetTime())
                 combo++;
             else
                 combo = 1;
-            comboTimeout = Game.GetTime() + 1000; // 1s
+            comboTimer = Game.GetTime() + ComboTimeout;
         }
 
         public int Hurt(float damage)
         {
             if (state != CharacterState.Dead)
             {
-                Life = Math.Max(0.0f, Life - 0.21f);
+                Life = Math.Max(0.0f, Life - damage);
                 if (Life <= 0.0f)
                 {
                     state = CharacterState.Dead;
                     sprite.SetAnim(4);
+                    chunks[2].Play();
                     return 2;
                 }
                 else
                 {
                     state = CharacterState.Hit;
                     sprite.SetAnim(3);
+                    chunks[1].Play();
                     return 1;
                 }
             }
@@ -120,19 +144,20 @@ namespace ElLuchamor
 
         public void Kick()
         {
-            int start = (int)Pos.X + (Dir ? -30 - 45 : 45);
+            int start = (int)(Pos.X + (Dir ? -30 - C2S : C2S));
             int end = start + 30;
-            kickLock = true;
-            kickTimeout = Game.GetTime() + 500;
+            attackLock = true;
+            attackTimer = Game.GetTime() + AttackTimeout;
             foreach (Character ch in Level.Instance.chs)
             {
                 if (ch != this)
                 {
-                    if ((ch.Pos.X <= start + 45 && ch.Pos.X >= start - 45) || (ch.Pos.X <= end + 45 && ch.Pos.X >= end - 45))
+                    if ((ch.Pos.X <= start + ch.C2S && ch.Pos.X >= start - ch.C2S) ||
+                        (ch.Pos.X <= end + ch.C2S && ch.Pos.X >= end - ch.C2S))
                     {
                         if (ch.Pos.Y <= Pos.Y + 30 && ch.Pos.Y >= Pos.Y - 30)
                         {
-                            switch (ch.Hurt(0.21f))
+                            switch (ch.Hurt(0.1f * Attack / ch.Defense))
                             {
                                 case 2:
                                     kills++;

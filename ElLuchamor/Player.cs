@@ -9,8 +9,8 @@ namespace ElLuchamor
 
         float lifeBar;
 
-        public Player(float x, float y)
-            : base(x, y)
+        public Player(string name, float x, float y)
+            : base(name, x, y)
         {
             Instance = this;
             lifeBar = Life * 200;
@@ -26,27 +26,27 @@ namespace ElLuchamor
             {
                 if (Input.GetKey(Key.W))
                 {
-                    Pos.Y -= time * speed.Y;
+                    Pos.Y -= time * Speed.Y;
                     sprite.SetAnim(1);
                     state = CharacterState.Walk;
                 }
                 else if (Input.GetKey(Key.S))
                 {
-                    Pos.Y += time * speed.Y;
+                    Pos.Y += time * Speed.Y;
                     sprite.SetAnim(1);
                     state = CharacterState.Walk;
 
                 }
                 else if (Input.GetKey(Key.A))
                 {
-                    Pos.X -= time * speed.X;
+                    Pos.X -= time * Speed.X;
                     Dir = true;
                     sprite.SetAnim(1);
                     state = CharacterState.Walk;
                 }
                 else if (Input.GetKey(Key.D))
                 {
-                    Pos.X += time * speed.X;
+                    Pos.X += time * Speed.X;
                     Dir = false;
                     sprite.SetAnim(1);
                     state = CharacterState.Walk;
@@ -57,7 +57,7 @@ namespace ElLuchamor
                     state = CharacterState.Idle;
                 }
 
-                if (Input.GetKeyDown(Key.E) && kickTimeout <= Game.GetTime())
+                if (Input.GetKeyDown(Key.E) && attackTimer <= Game.GetTime())
                 {
                     sprite.SetAnim(2);
                     state = CharacterState.Kick;
@@ -69,11 +69,11 @@ namespace ElLuchamor
                 if (sprite.GetAnim() == 0)
                 {
                     state = CharacterState.Idle;
-                    kickLock = false;
+                    attackLock = false;
                 }
                 else if (state == CharacterState.Kick)
                 {
-                    if (sprite.GetFrame() == 1 && !kickLock)
+                    if (sprite.GetFrame() == 1 && !attackLock)
                     {
                         Kick();
                     }
@@ -81,7 +81,7 @@ namespace ElLuchamor
             }
 
             Pos.X = Math.Min(Math.Max(Level.Instance.Lock.X, Pos.X), Level.Instance.Lock.Y);
-            Pos.Y = Math.Min(Math.Max(300, Pos.Y), 430);
+            Pos.Y = Math.Min(Math.Max(300 + C2B, Pos.Y), 430 + C2B);
             Game.Camera.X = Math.Min(Math.Max(Level.Instance.Lock.X - 200, MathE.Lerp(Game.Camera.X, Pos.X - (640 / 2) - (Pos.Y / 1.5f) + 100, 0.1f)), Level.Instance.Lock.Y - 640);
         }
 

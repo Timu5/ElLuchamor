@@ -27,8 +27,8 @@ namespace ElLuchamor
             bg[2] = Assets.Get<Sprite>("bg2.png"); // wczytujemy tło
             m = Assets.Get<Music>("bg2.mp3"); // wczytujemy muzyke
             chs = new List<Character>(); // Tworzymy liste postaci
-            chs.Add(new Player(300, 200)); // dodajemy gracza do listy postaci
-            chs.Add(new Enemy(1000, 220));
+            chs.Add(new Player("test2.ch", 300, 200)); // dodajemy gracza do listy postaci
+            chs.Add(new Enemy("test.ch", 1000, 220));
             Lock = new Vector2(140+60, 3000+60+85);
             //m.Play(); // odpalamy muzyczke, bedzie leciała w petli
         }
@@ -58,7 +58,7 @@ namespace ElLuchamor
             }
             if (chs.Count - dead == 1)
             {
-                chs.Add(new Enemy(Player.Instance.Pos.X + 600, 300));
+                chs.Add(new Enemy("test.ch", Player.Instance.Pos.X + 600, 300));
             }
             chs.Sort(); // sortujemy postacie, aby były prawidłowo narysowane
         }

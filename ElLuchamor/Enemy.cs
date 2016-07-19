@@ -15,11 +15,11 @@ namespace ElLuchamor
     class Enemy : Character // klasa Enenmy dziedziczasa po CHaracter
     {
         EnemyState estate;
-        public Enemy(float x, float y)
-            : base(x, y)
+        public Enemy(string name, float x, float y)
+            : base(name, x, y)
         {
             estate = EnemyState.Chase;
-            speed = new Vector2(250, 150);
+            Speed = new Vector2(250, 150);
         }
 
         override public void Update(float time)
@@ -37,13 +37,13 @@ namespace ElLuchamor
                     case EnemyState.Chase:
                         if (Player.Instance.Pos.Y < Pos.Y - 10)
                         {
-                            Pos.Y -= time * speed.Y;
+                            Pos.Y -= time * Speed.Y;
                             sprite.SetAnim(1);
                             state = CharacterState.Walk;
                         }
                         else if (Player.Instance.Pos.Y > Pos.Y + 10)
                         {
-                            Pos.Y += time * speed.Y;
+                            Pos.Y += time * Speed.Y;
                             sprite.SetAnim(1);
                             state = CharacterState.Walk;
                         }
@@ -51,22 +51,23 @@ namespace ElLuchamor
                         {
                             if (Player.Instance.Pos.X > Pos.X + 60)
                             {
-                                Pos.X += time * speed.X;
+                                Pos.X += time * Speed.X;
                                 sprite.SetAnim(1);
                                 state = CharacterState.Walk;
                             }
                             else if (Player.Instance.Pos.X < Pos.X - 60)
                             {
-                                Pos.X -= time * speed.X;
+                                Pos.X -= time * Speed.X;
                                 sprite.SetAnim(1);
                                 state = CharacterState.Walk;
                             }
                             else
                             {
-                                if (kickTimeout <= Game.GetTime() && (new Random()).Next(0, 100) > 96) // Temp hack !
+                                if (attackTimer <= Game.GetTime() && (new Random()).Next(0, 100) > 96) // Temp hack !
                                 {
                                     sprite.SetAnim(2);
                                     state = CharacterState.Kick;
+                                    chunks[0].Play();
                                 }
                                 else
                                 {
@@ -81,18 +82,18 @@ namespace ElLuchamor
             else if (sprite.GetAnim() == 0)
             {
                 state = CharacterState.Idle;
-                kickLock = false;
+                attackLock = false;
             }
             else if (state == CharacterState.Kick)
             {
-                if (sprite.GetFrame() == 1 && !kickLock)
+                if (sprite.GetFrame() == 1 && !attackLock)
                 {
                     Kick();
                 }
             }
 
             Pos.X = Math.Min(Math.Max(Level.Instance.Lock.X, Pos.X), Level.Instance.Lock.Y);
-            Pos.Y = Math.Min(Math.Max(300, Pos.Y), 430);
+            Pos.Y = Math.Min(Math.Max(300 + C2B, Pos.Y), 430 + C2B);
         }
     }
 }
