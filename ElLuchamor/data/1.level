@@ -1,9 +1,13 @@
-player 100 200
+player 500 400
 stage 200 900
 enemy test.ch 300 500 0
-enemy test.ch 300 500 2
-enemy test.ch 300 500 3
+enemy test.ch 450 500 2
+enemy test.ch 600 500 3
 stage 1100 2000
-enemy test.ch 300 500 0
-enemy test.ch 300 500 2
-enemy test.ch 300 500 3
+enemy test.ch 1200 500 0
+enemy test.ch 1500 500 2
+enemy test.ch 1700 500 3
+stage 2100 3000
+enemy test.ch 2300 500 0
+enemy test.ch 2600 500 2
+enemy test.ch 2700 500 3

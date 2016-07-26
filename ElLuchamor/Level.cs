@@ -14,7 +14,7 @@ namespace ElLuchamor
         public List<Character> chs; // postacie
 
         List<Vector2> stages;
-        List<Character[]> stageEnemy;
+        List<List<Character>> stageEnemy;
         int currentStage;
         bool waitForPlayer;
 
@@ -23,13 +23,40 @@ namespace ElLuchamor
         public Level(string data)
         {
             Instance = this;
+
             stages = new List<Vector2>();
-            stages.Add(new Vector2(200, 900));
-            stages.Add(new Vector2(1000, 1500));
-            stages.Add(new Vector2(1600, 2000));
-            stages.Add(new Vector2(2100, 3000));
+            stageEnemy = new List<List<Character>>();
+
+            chs = new List<Character>(); // Tworzymy liste postaci
+            chs.Add(new Player("player.ch", 300, 200)); // dodajemy gracza do listy postaci
+            
+            string[] pars = Assets.Get<string>(data).Split(new char[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                switch(pars[i])
+                {
+                    case "player":
+                        Player.Instance.Pos.X = float.Parse(pars[++i]);
+                        Player.Instance.Pos.Y = float.Parse(pars[++i]);
+                        break;
+                    case "stage":
+                        stages.Add(new Vector2(float.Parse(pars[++i]), float.Parse(pars[++i])));
+                        stageEnemy.Add(new List<Character>());
+                        break;
+                    case "enemy":
+                        stageEnemy[stages.Count - 1].Add(new Enemy(pars[++i], float.Parse(pars[++i]), float.Parse(pars[++i]), EnemyState.Idle));
+                        i++;
+                        break;
+                }
+            }
+
             currentStage = 0;
             Lock = stages[currentStage];
+            foreach (Enemy e in stageEnemy[currentStage])
+            {
+                chs.Add(e);
+            }
         }
 
         public void Init() // wykona sie raz podczas wczytania
@@ -40,9 +67,7 @@ namespace ElLuchamor
             bg[2] = Assets.Get<Sprite>("bg2.png"); // wczytujemy tło
             arrow = Assets.Get<Sprite>("arrow.png");
             m = Assets.Get<Music>("bg2.mp3"); // wczytujemy muzyke
-            chs = new List<Character>(); // Tworzymy liste postaci
-            chs.Add(new Player("test2.ch", 300, 200)); // dodajemy gracza do listy postaci
-            chs.Add(new Enemy("test.ch", 1000, 220, EnemyState.Idle));
+            //chs.Add(new Enemy("test.ch", 1000, 220, EnemyState.Idle));
             //Lock = new Vector2(140+60, 3000+60+85);
             //m.Play(); // odpalamy muzyczke, bedzie leciała w petli
         }
@@ -102,7 +127,10 @@ namespace ElLuchamor
                     waitForPlayer = true;
                     Log.WriteLine(stages.Count.ToString());
                     Lock.Y = stages[currentStage].Y;
-                    chs.Add(new Enemy("test.ch", Player.Instance.Pos.X + 600, 300, EnemyState.Idle));
+                    foreach (Enemy e in stageEnemy[currentStage])
+                    {
+                        chs.Add(e);
+                    }
                 }
             }
 
