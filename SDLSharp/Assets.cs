@@ -48,6 +48,7 @@ namespace SDLSharp
                     case ".anim":
                     case ".txt":
                     case ".ch":
+                    case ".level":
                         obj = File.ReadAllText(fullname);
                         break;
 

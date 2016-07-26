@@ -15,10 +15,10 @@ namespace ElLuchamor
     class Enemy : Character // klasa Enenmy dziedziczasa po CHaracter
     {
         EnemyState estate;
-        public Enemy(string name, float x, float y)
+        public Enemy(string name, float x, float y, EnemyState es)
             : base(name, x, y)
         {
-            estate = EnemyState.Chase;
+            estate = es;
             Speed = new Vector2(250, 150);
         }
 
@@ -29,9 +29,16 @@ namespace ElLuchamor
             if (state == CharacterState.Dead) return;
             if (Player.Instance.Life <= 0.0f) return;
 
+            if (estate == EnemyState.Idle)
+            {
+                if (sprite.GetAnim() == 3)
+                    estate = EnemyState.Chase;
+            }
+
             if (state == CharacterState.Walk || state == CharacterState.Idle)
             {
-                this.Dir = this.Pos.X - Player.Instance.Pos.X > 0;
+                if (state == CharacterState.Walk)
+                    this.Dir = this.Pos.X - Player.Instance.Pos.X > 0;
                 switch (estate)
                 {
                     case EnemyState.Chase:

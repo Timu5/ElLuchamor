@@ -45,7 +45,7 @@ namespace SDLSharp
             SDL.SDL_Init(SDL2.SDL.SDL_INIT_EVERYTHING);
             SDL_mixer.Mix_OpenAudio(44100, SDL_mixer.MIX_DEFAULT_FORMAT, 2, 4096);
             SDL_ttf.TTF_Init();
-            IntPtr window = SDL.SDL_CreateWindow(Name, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED, Config.GetInt("width"), Config.GetInt("height"), SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN);
+            IntPtr window = SDL.SDL_CreateWindow(Name, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED, Config.GetInt("width"), Config.GetInt("height"), SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN | SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE);
             renderer = SDL.SDL_CreateRenderer(window, 0, SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED | SDL.SDL_RendererFlags.SDL_RENDERER_PRESENTVSYNC);
 
             if (Config.GetInt("fullscreen") > 0)

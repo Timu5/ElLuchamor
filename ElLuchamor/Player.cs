@@ -80,9 +80,10 @@ namespace ElLuchamor
                 }
             }
 
-            Pos.X = Math.Min(Math.Max(Level.Instance.Lock.X, Pos.X), Level.Instance.Lock.Y);
+            Pos.X = Math.Min(Math.Max(Level.Instance.Lock.X, Pos.X), Level.Instance.Lock.Y + 150);
             Pos.Y = Math.Min(Math.Max(300 + C2B, Pos.Y), 430 + C2B);
-            Game.Camera.X = Math.Min(Math.Max(Level.Instance.Lock.X - 200, MathE.Lerp(Game.Camera.X, Pos.X - (640 / 2) - (Pos.Y / 1.5f) + 100, 0.1f)), Level.Instance.Lock.Y - 640);
+            //Game.Camera.X = MathE.Lerp(Game.Camera.X, Pos.X - (640 / 2) - (Pos.Y / 1.5f) + 100, 0.1f);
+            Game.Camera.X = MathE.Lerp(Game.Camera.X, Math.Min(Math.Max(Level.Instance.Lock.X - 200, Pos.X - (640 / 2) - (Pos.Y / 1.5f) + 100), Level.Instance.Lock.Y - 640), 0.1f);
         }
 
         override public void Draw()

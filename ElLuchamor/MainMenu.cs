@@ -37,7 +37,7 @@ namespace ElLuchamor
             {
                 if (selected == 0)
                 {
-                    Game.SetState(new Level());
+                    Game.SetState(new Level("1.level"));
                 }
                 else if( selected == 2)
                 {

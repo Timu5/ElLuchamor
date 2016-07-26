@@ -51,7 +51,7 @@ namespace ElLuchamor
 
         public Character(string name, float x, float y)
         {
-            string[] pars = Assets.Get<string>(name).Split(new char[]{' ', '\t'}, StringSplitOptions.RemoveEmptyEntries);
+            string[] pars = Assets.Get<string>(name).Split(new char[]{' ', '\t', '\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
 
             Pos = new Vector2(x, y);
             Life = 1.0f;
