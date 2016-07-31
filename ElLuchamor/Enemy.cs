@@ -28,6 +28,7 @@ namespace ElLuchamor
 
             if (state == CharacterState.Dead) return;
             if (Player.Instance.Life <= 0.0f) return;
+            if (Level.Instance.waitForPlayer) return;
 
             if (estate == EnemyState.Idle)
             {

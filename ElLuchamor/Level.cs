@@ -16,7 +16,7 @@ namespace ElLuchamor
         List<Vector2> stages;
         List<List<Character>> stageEnemy;
         int currentStage;
-        bool waitForPlayer;
+        public bool waitForPlayer;
 
         public Vector2 Lock; // obecna blokada pozycji gracza
 
@@ -28,7 +28,7 @@ namespace ElLuchamor
             stageEnemy = new List<List<Character>>();
 
             chs = new List<Character>(); // Tworzymy liste postaci
-            chs.Add(new Player("player.ch", 300, 200)); // dodajemy gracza do listy postaci
+            chs.Add(new Player("player.ch", 300, 0)); // dodajemy gracza do listy postaci
             
             string[] pars = Assets.Get<string>(data).Split(new char[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -41,12 +41,18 @@ namespace ElLuchamor
                         Player.Instance.Pos.Y = float.Parse(pars[++i]);
                         break;
                     case "stage":
-                        stages.Add(new Vector2(float.Parse(pars[++i]), float.Parse(pars[++i])));
+                        float xs = float.Parse(pars[++i]);
+                        float ys = float.Parse(pars[++i]);
+                        stages.Add(new Vector2(xs, ys));
                         stageEnemy.Add(new List<Character>());
                         break;
                     case "enemy":
-                        stageEnemy[stages.Count - 1].Add(new Enemy(pars[++i], float.Parse(pars[++i]), float.Parse(pars[++i]), EnemyState.Idle));
-                        i++;
+                        string name = pars[++i];
+                        float x = float.Parse(pars[++i]);
+                        float y = float.Parse(pars[++i]);
+                        EnemyState s = pars[++i] == "0" ? EnemyState.Idle : EnemyState.Chase;
+                        stageEnemy[stages.Count - 1].Add(new Enemy(name, x, y, s));
+                        Console.WriteLine("Load enenmy " + name + " " + x + " " + y + " " + s.ToString());
                         break;
                 }
             }
@@ -67,8 +73,6 @@ namespace ElLuchamor
             bg[2] = Assets.Get<Sprite>("bg2.png"); // wczytujemy tło
             arrow = Assets.Get<Sprite>("arrow.png");
             m = Assets.Get<Music>("bg2.mp3"); // wczytujemy muzyke
-            //chs.Add(new Enemy("test.ch", 1000, 220, EnemyState.Idle));
-            //Lock = new Vector2(140+60, 3000+60+85);
             //m.Play(); // odpalamy muzyczke, bedzie leciała w petli
         }
         float fps = 0;
@@ -139,8 +143,8 @@ namespace ElLuchamor
 
         public void Draw() // wykonuje sie podczas kazdej klatki
         {
-            bg[0].Draw((int)(Game.Camera.X), (int)(Game.Camera.Y)); 
-            bg[1].Draw((int)(Game.Camera.X * 0.5), (int)(Game.Camera.Y * 0.5)); 
+            bg[0].Draw((int)(Game.Camera.X), (int)(Game.Camera.Y));
+            bg[1].Draw((int)(Game.Camera.X * 0.5), (int)(Game.Camera.Y * 0.5));
             bg[2].Draw(0, 0); // rysyj tlo
             for (int i = 0; i < chs.Count; i++)
             {
